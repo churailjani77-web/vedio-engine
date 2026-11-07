@@ -49,7 +49,14 @@ def get_universal(url: str):
         'no_warnings': True,
         'skip_download': True,
         'extractor_args': {
-            'youtube': {'player_client': ['android', 'ios']}
+            'youtube': {
+                'player_client': ['tv_embedded', 'ios', 'mweb'],
+                'player_skip': ['webpage', 'configs'],
+            }
+        },
+        'http_headers': {
+            'User-Agent': 'com.google.ios.youtube/19.10.1 (iPhone14,3; U; CPU OS 17_4 like Mac OS X; en_US)',
+            'Accept-Language': 'en-US,en;q=0.9',
         }
     }
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -59,7 +66,7 @@ def get_universal(url: str):
             video_url = info['entries'][0].get('url')
 
         if not video_url:
-            raise Exception("Direct stream URL nahi mil saka.")
+            raise Exception("Direct video stream nahi mil saka.")
 
         title = info.get('title')
         if not title or not str(title).strip():
